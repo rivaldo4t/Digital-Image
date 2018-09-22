@@ -52,6 +52,7 @@ Image readPseudoPPM(std::string fileName)
 	}
 
 	ifs.close();
+	std::cout << "Read successfully " << fileName << std::endl;
 	return img;
 }
 
@@ -99,6 +100,24 @@ Image readPPM(std::string fileName)
 		exit(1);
 	}
 
+	// for skipping comments --------
+	bool flag = true;
+	char bufChar;
+	char bufArray[100];
+	ifs.get(bufChar); // skip '\n'
+	while (flag)
+	{
+		ifs.get(bufChar); 
+		if (bufChar != '#') // if this line is not a comment, put the char back in stream and continue reading file
+		{
+			flag = false;
+			ifs.unget();
+		}
+		else
+			ifs.getline(bufArray, 100, '\n'); // if this line is a comment, read the line and check for further comments in next iteration of loop
+	}
+	// --------
+
 	int w, h, b;
 	ifs >> w >> h >> b;
 	img.w = w;
@@ -108,6 +127,7 @@ Image readPPM(std::string fileName)
 	ifs.read(reinterpret_cast<char *>(img.data.data()), img.data.size());
 
 	ifs.close();
+	std::cout << "Read successfully " << fileName << std::endl;
 	return img;
 }
 
