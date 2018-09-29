@@ -68,7 +68,7 @@ void writePseudoPPM(Image img, std::string fileName)
 	ofs << "4T" << "\n"
 		<< img.w << " " << img.h << "\n";
 
-	for (int i = 0; i < img.h * img.w * 3; ++i)
+	for (unsigned int i = 0; i < img.h * img.w * 3; ++i)
 	{
 		ofs << (int)img.data[i];
 		if ((i+1) % (img.w * 3) != 0)
@@ -116,7 +116,7 @@ Image readPPM(std::string fileName)
 		else
 			ifs.getline(bufArray, 100, '\n'); // if this line is a comment, read the line and check for further comments in next iteration of loop
 	}
-	// --------
+	// ------------------------------
 
 	int w, h, b;
 	ifs >> w >> h >> b;

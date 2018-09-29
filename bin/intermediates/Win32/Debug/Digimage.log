@@ -1,7 +1,2 @@
 ﻿  Main.cpp
-c:\users\tushar\source\repos\digimage\digimage\header\ppm.hpp(71): warning C4018: '<': signed/unsigned mismatch
-c:\users\tushar\source\repos\digimage\digimage\source\main.cpp(42): warning C4244: '+=': conversion from 'double' to 'uint8_t', possible loss of data
-c:\users\tushar\source\repos\digimage\digimage\source\main.cpp(43): warning C4244: '+=': conversion from 'double' to 'uint8_t', possible loss of data
-c:\users\tushar\source\repos\digimage\digimage\source\main.cpp(44): warning C4244: '+=': conversion from 'double' to 'uint8_t', possible loss of data
-c:\users\tushar\source\repos\digimage\digimage\source\main.cpp(65): warning C4018: '<': signed/unsigned mismatch
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Debug\Digimage.exe
