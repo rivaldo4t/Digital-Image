@@ -146,10 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Main.hpp" />
+    <ClInclude Include="header\utilities.hpp" />
     <ClInclude Include="header\ppm.hpp" />
     <ClInclude Include="header\image.hpp" />
   </ItemGroup>

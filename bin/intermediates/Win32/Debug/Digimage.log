@@ -1,2 +1,10 @@
-﻿  Main.cpp
+﻿  main.cpp
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(86): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(87): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(88): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(135): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(136): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(137): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(320): warning C4018: '<': signed/unsigned mismatch
+c:\users\tushar\source\repos\digimage\digimage\header\utilities.hpp(325): warning C4018: '>=': signed/unsigned mismatch
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Debug\Digimage.exe

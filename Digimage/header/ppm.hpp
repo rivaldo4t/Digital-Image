@@ -9,11 +9,11 @@
 	----------------
 	4T
 	width height
-	r0 b0 g0 r1 b1 c1 . . .(width * 3 number of columns)
+	r0 b0 g0 r1 b1 c1 . . .(number of columns = (width * 3))
 	.
 	.
 	.
-	(height number of rows)
+	(number of rows = (height))
 	----------------
 */
 
