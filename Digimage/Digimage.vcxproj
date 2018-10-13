@@ -149,9 +149,10 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\utilities.hpp" />
+    <ClInclude Include="header\main.hpp" />
     <ClInclude Include="header\ppm.hpp" />
     <ClInclude Include="header\image.hpp" />
+    <ClInclude Include="header\utility.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ppm\cube.ppm" />

@@ -1,52 +1,14 @@
-#include "utilities.hpp"
-// #define READ_WRITE_DISPLAY
+#include "main.hpp"
 
 void setPixels()
 {
-
-#ifdef READ_WRITE_DISPLAY
-	// -------- Real PPM - Read / Write --------
-	Image img = readPPM("ppm/construction.ppm");
-	writePPM(img, "ppm/temp.ppm");
-
-	// -------- Custom PPM - Read / Write --------
-	// Image img = readPseudoPPM("ppm/pseudo.txt");
-	// writePseudoPPM(img, "ppm/a.txt");
-
-	// -------- Populate pixmap for display with OpenGL --------
+	Image img = readPPM("ppm/bw.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
 	pixmap = img.data;
-#endif
 
-	//render();
-
-	
-	// Project 3.1 - Curves Adjustment using piecewise linear interpolation
-	// manipulate the img and store result in pixmap
-#if 0
-	 Image img = readPPM("ppm/ca.ppm");
-	 curvesAdjustment(img);
-	
-	 // write the manipulated pixmap to file
-	 Image img1(width, height, pixmap);
-	 img1.flip();
-	 writePPM(img1, "ppm/ca_m.ppm");
-#endif
-
-	// Project 3.2 - Hue replacement
-	// Replace hue in destination image from hue in source image
-#if 1
-	Image src = readPPM("ppm/hue_src_7.ppm");
-	Image dst = readPPM("ppm/hue_dst.ppm");
-	replaceHues(src, dst);
-
-	// write the manipulated pixmap to file
-	Image img2(width, height, pixmap);
-	img2.flip();
-	writePPM(img2, "ppm/hue_replace_3.ppm");
-#endif
+	render();
 }
 
 static void windowResize(int w, int h)
