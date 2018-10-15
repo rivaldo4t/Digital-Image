@@ -19,6 +19,7 @@
 
 int width, height;
 std::vector<uint8_t> pixmap;
+std::vector<uint8_t> pixmap2;
 
 void clampImgBound(int& row, int& col)
 {
@@ -170,6 +171,18 @@ public:
 	void embossFilter2()
 	{
 		weights.resize(kHeight * kWidth, 0.0);
+
+		weights[0] = 1;
+		weights[kWidth - 1] = -1;
+		weights[kWidth * (kHeight - 1)] = -1;
+		weights[kWidth * (kHeight - 1) + kWidth - 1] = 1;
+
+		absWeightSum = 4;
+	}
+
+	void embossFilter3()
+	{
+		weights.resize(kHeight * kWidth, 0.0);
 		absWeightSum = 0;
 
 		for (int i = 0; i < kHeight; ++i)
@@ -186,18 +199,6 @@ public:
 				absWeightSum += abs(weights[index]);
 			}
 		}
-	}
-
-	void embossFilter3()
-	{
-		weights.resize(kHeight * kWidth, 0.0);
-
-		weights[0] = 1;
-		weights[kWidth - 1] = -1;
-		weights[kWidth * (kHeight - 1)] = -1;
-		weights[kWidth * (kHeight - 1) + kWidth - 1] = 1;
-
-		absWeightSum = 4;
 	}
 
 	void embossFilter4()
@@ -224,7 +225,7 @@ public:
 	{
 		isEdge = true;
 		
-		weights = { 1, 2, 1, 0, 0, 0, -1, -2, -1 };
+		weights = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
 		absWeightSum = 8;
 		weights2 = { 1, 0, -1, 2, 0, -2, 1, 0, -1 };
 		absWeightSum2 = 8;
@@ -283,38 +284,20 @@ public:
 				cGradX += neighborColor * weights2[index];
 			}
 		}
-		cGradY = Color(cGradY.r / absWeightSum + 0.5, cGradY.g / absWeightSum + 0.5, cGradY.b / absWeightSum + 0.5);
-		cGradX = Color(cGradX.r / absWeightSum2 + 0.5, cGradX.g / absWeightSum2 + 0.5, cGradX.b / absWeightSum2 + 0.5);
-		//cGradY = cGradY / absWeightSum;
-		//cGradX = cGradX / absWeightSum2;
-
-		//double r = sqrt(cGradX.r * cGradX.r + cGradY.r * cGradY.r);
-		//double g = sqrt(cGradX.g * cGradX.g + cGradY.g * cGradY.g);
-		//double b = sqrt(cGradX.b * cGradX.b + cGradY.b * cGradY.b);
-		//cGradMag = Color(r, g, b);
-		//cGradMag = Color(cGradMag.r / absWeightSum2 + 0.5, cGradMag.g / absWeightSum2 + 0.5, cGradMag.b / absWeightSum2 + 0.5);
 		
-		cGradMag = Color(abs(cGradX.r) + abs(cGradY.r), abs(cGradX.g) + abs(cGradY.g), abs(cGradX.b) + abs(cGradY.b));
-		//g b
-		if (cGradMag.r > 0.7)
-			cGradMag.r = 1.0;
-		else if (cGradMag.r < 0.3)
-			cGradMag.r = 0.0;
+		cGradY = Color(	(cGradY.r + 0.5*absWeightSum) / absWeightSum,
+						(cGradY.g + 0.5*absWeightSum) / absWeightSum,
+						(cGradY.b + 0.5*absWeightSum) / absWeightSum);
 
-		if (cGradMag.g > 0.7)
-			cGradMag.g = 1.0;
-		else if (cGradMag.g < 0.3)
-			cGradMag.g = 0.0;
+		cGradX = Color(	(cGradX.r + 0.5*absWeightSum2) / absWeightSum2,
+						(cGradX.g + 0.5*absWeightSum2) / absWeightSum2,
+						(cGradX.b + 0.5*absWeightSum2) / absWeightSum2);
 
-		if (cGradMag.b > 0.7)
-			cGradMag.b = 1.0;
-		else if (cGradMag.b < 0.3)
-			cGradMag.b = 0.0;
-
+		cGradMag = cGradY;
+		cGradMag += cGradX;
+		cGradMag = cGradMag * 0.5;
 		cGradMag = Color(1 - cGradMag.r, 1 - cGradMag.g, 1 - cGradMag.b);
 
-		//return cGradX;
-		//return cGradY;
 		return cGradMag;
 	}
 
@@ -339,11 +322,10 @@ public:
 				c += neighborColor * weights[index];
 			}
 		}
-		/*c.r = abs(c.r);
-		c.g = abs(c.g);
-		c.b = abs(c.b);
-		return c / 16;*/
-		return Color(c.r / absWeightSum + 0.5, c.g / absWeightSum + 0.5, c.b / absWeightSum + 0.5);
+		
+		return Color(	(c.r + 0.5*absWeightSum) / absWeightSum,
+						(c.g + 0.5*absWeightSum) / absWeightSum,
+						(c.b + 0.5*absWeightSum) / absWeightSum		);
 	}
 };
 
@@ -370,8 +352,8 @@ public:
 				float radius = sqrt(float(centerX * centerX + centerY * centerY));
 				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
 
-				weights[index] = abs(radius - dist) + kHeight / 2;
-
+				//weights[index] = abs(radius - dist) + kHeight / 2;
+				weights[index] = 1;
 				maxWeight = std::max(maxWeight, weights[index]);
 			}
 		}
@@ -393,8 +375,8 @@ public:
 				float radius = sqrt(float(centerX * centerX + centerY * centerY));
 				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
 
-				weights[index] = abs(radius - dist) + kHeight / 2;
-
+				//weights[index] = abs(radius - dist) + kHeight / 2;
+				weights[index] = 1;
 				minWeight = std::min(minWeight, weights[index]);
 			}
 		}
@@ -417,7 +399,10 @@ public:
 				Color neighborColor(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
 
 				int index = i * kWidth + j;
-
+				if (neighborColor.r > 0)
+				{
+					index = index;
+				}
 				Color c2 = neighborColor * weights[index];
 				if (isDilation)
 					c = c2 > c ? c2 : c;
@@ -430,7 +415,6 @@ public:
 			c = c / maxWeight;
 		else 
 			c = c / minWeight;
-
 		return c;
 	}
 };
@@ -507,7 +491,7 @@ void render()
 					// Select any ONE filter type
 					// Select any ONE filter within the type
 
-					//ConvolutionFilter k(9, 9);
+					ConvolutionFilter k(9, 9);
 					//k.boxFilter();
 					//k.radialFilter();
 					//k.motionFilter();
@@ -516,12 +500,12 @@ void render()
 					//k.dilationFilter();
 					//k.erosionFilter();
 
-					DerivativeFilter k(3, 3);
+					//DerivativeFilter k(3, 3);
 					//k.embossFilter1();
 					//k.embossFilter2();
 					//k.embossFilter3();
 					//k.embossFilter4();
-					k.edgeFilter();
+					//k.edgeFilter();
 
 					Color c = k.eval(i, j);
 
@@ -531,11 +515,15 @@ void render()
 				}
 			}
 
-			pixmap[p + 0] = (uint8_t)(r * 255);
-			pixmap[p + 1] = (uint8_t)(g * 255);
-			pixmap[p + 2] = (uint8_t)(b * 255);
+			// store in a different pixmap; 
+			// if you use same one, the next pixels will use convoluted pixel colors instead of input pixel colors
+			pixmap2[p + 0] = (uint8_t)(r * 255);
+			pixmap2[p + 1] = (uint8_t)(g * 255);
+			pixmap2[p + 2] = (uint8_t)(b * 255);
 		}
 	}
+
+	pixmap = std::move(pixmap2);
 }
 
 double pieceWiseLinearInterpolation(std::vector<double>& curveParam, double c)

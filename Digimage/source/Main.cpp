@@ -2,11 +2,12 @@
 
 void setPixels()
 {
-	Image img = readPPM("ppm/bw.ppm");
+	Image img = readPPM("ppm/ca.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
 	pixmap = img.data;
+	pixmap2.resize(pixmap.size(), 0.0);
 
 	render();
 }
