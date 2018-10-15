@@ -133,6 +133,96 @@ public:
 	}
 };
 
+class MorphologicalFilter : public Kernel
+{
+	bool isDilation;
+	float maxWeight, minWeight;
+public:
+	MorphologicalFilter(int sizeX, int sizeY) : Kernel(sizeX, sizeY) {}
+
+	void dilationFilter()
+	{
+		isDilation = true;
+		weights.resize(kHeight * kWidth, 0.0);
+		maxWeight = INT_MIN;
+
+		for (int i = 0; i < kHeight; ++i)
+		{
+			for (int j = 0; j < kWidth; ++j)
+			{
+				int index = i * kWidth + j;
+				int centerX = kHeight / 2;
+				int centerY = kWidth / 2;
+				float radius = sqrt(float(centerX * centerX + centerY * centerY));
+				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
+
+				//weights[index] = abs(radius - dist) + kHeight / 2;
+				weights[index] = 1;
+				maxWeight = std::max(maxWeight, weights[index]);
+			}
+		}
+	}
+
+	void erosionFilter()
+	{
+		weights.resize(kHeight * kWidth, 0.0);
+		isDilation = false;
+		minWeight = INT_MAX;
+
+		for (int i = 0; i < kHeight; ++i)
+		{
+			for (int j = 0; j < kWidth; ++j)
+			{
+				int index = i * kWidth + j;
+				int centerX = kHeight / 2;
+				int centerY = kWidth / 2;
+				float radius = sqrt(float(centerX * centerX + centerY * centerY));
+				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
+
+				//weights[index] = abs(radius - dist) + kHeight / 2;
+				weights[index] = 1;
+				minWeight = std::min(minWeight, weights[index]);
+			}
+		}
+	}
+
+	Color eval(int x, int y)
+	{
+		Color c;
+		if (!isDilation)
+			c = Color(1.0, 1.0, 1.0);
+
+		for (int i = 0; i < kHeight; ++i)
+		{
+			for (int j = 0; j < kWidth; ++j)
+			{
+				int row = x + i - 0.5 * (kHeight - 1);
+				int col = y + j - 0.5 * (kWidth - 1);
+				clampImgBound(row, col);
+				int pix = (row * width + col) * 3;
+				Color neighborColor(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+
+				int index = i * kWidth + j;
+				if (neighborColor.r > 0)
+				{
+					index = index;
+				}
+				Color c2 = neighborColor * weights[index];
+				if (isDilation)
+					c = c2 > c ? c2 : c;
+				else
+					c = c2 < c ? c2 : c;
+			}
+		}
+
+		if (isDilation)
+			c = c / maxWeight;
+		else 
+			c = c / minWeight;
+		return c;
+	}
+};
+
 class DerivativeFilter : public Kernel
 {
 	float absWeightSum;
@@ -285,6 +375,18 @@ public:
 			}
 		}
 		
+#if 0
+		double tempR = (abs(cGradY.r) + abs(cGradX.r)) / 0.5;
+		tempR = 1 - tempR;
+		double tempG = (abs(cGradY.g) + abs(cGradX.g)) / 0.5;
+		tempG = 1 - tempG;
+		double tempB = (abs(cGradY.b) + abs(cGradX.b)) / 0.5;
+		tempB = 1 - tempB;
+		return Color(tempR, tempR, tempR);
+#endif
+
+		// you do this to get only the direction; I guess!
+#if 0
 		cGradY = Color(	(cGradY.r + 0.5*absWeightSum) / absWeightSum,
 						(cGradY.g + 0.5*absWeightSum) / absWeightSum,
 						(cGradY.b + 0.5*absWeightSum) / absWeightSum);
@@ -292,11 +394,20 @@ public:
 		cGradX = Color(	(cGradX.r + 0.5*absWeightSum2) / absWeightSum2,
 						(cGradX.g + 0.5*absWeightSum2) / absWeightSum2,
 						(cGradX.b + 0.5*absWeightSum2) / absWeightSum2);
+#endif
 
+#if 0
 		cGradMag = cGradY;
 		cGradMag += cGradX;
 		cGradMag = cGradMag * 0.5;
-		cGradMag = Color(1 - cGradMag.r, 1 - cGradMag.g, 1 - cGradMag.b);
+#else
+
+		cGradMag = Color(sqrt(cGradY.r * cGradY.r + cGradX.r * cGradX.r), 
+			sqrt(cGradY.g * cGradY.g + cGradX.g * cGradX.g),
+			sqrt(cGradY.b * cGradY.b + cGradX.b * cGradX.b));
+#endif
+		cGradMag = Color(1 - cGradMag.r, 1 - cGradMag.r, 1 - cGradMag.r);
+
 
 		return cGradMag;
 	}
@@ -326,96 +437,6 @@ public:
 		return Color(	(c.r + 0.5*absWeightSum) / absWeightSum,
 						(c.g + 0.5*absWeightSum) / absWeightSum,
 						(c.b + 0.5*absWeightSum) / absWeightSum		);
-	}
-};
-
-class MorphologicalFilter : public Kernel
-{
-	bool isDilation;
-	float maxWeight, minWeight;
-public:
-	MorphologicalFilter(int sizeX, int sizeY) : Kernel(sizeX, sizeY) {}
-
-	void dilationFilter()
-	{
-		isDilation = true;
-		weights.resize(kHeight * kWidth, 0.0);
-		maxWeight = INT_MIN;
-
-		for (int i = 0; i < kHeight; ++i)
-		{
-			for (int j = 0; j < kWidth; ++j)
-			{
-				int index = i * kWidth + j;
-				int centerX = kHeight / 2;
-				int centerY = kWidth / 2;
-				float radius = sqrt(float(centerX * centerX + centerY * centerY));
-				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
-
-				//weights[index] = abs(radius - dist) + kHeight / 2;
-				weights[index] = 1;
-				maxWeight = std::max(maxWeight, weights[index]);
-			}
-		}
-	}
-
-	void erosionFilter()
-	{
-		weights.resize(kHeight * kWidth, 0.0);
-		isDilation = false;
-		minWeight = INT_MAX;
-
-		for (int i = 0; i < kHeight; ++i)
-		{
-			for (int j = 0; j < kWidth; ++j)
-			{
-				int index = i * kWidth + j;
-				int centerX = kHeight / 2;
-				int centerY = kWidth / 2;
-				float radius = sqrt(float(centerX * centerX + centerY * centerY));
-				float dist = sqrt(float(pow(centerX - i, 2.0) + pow(centerY - j, 2.0)));
-
-				//weights[index] = abs(radius - dist) + kHeight / 2;
-				weights[index] = 1;
-				minWeight = std::min(minWeight, weights[index]);
-			}
-		}
-	}
-
-	Color eval(int x, int y)
-	{
-		Color c;
-		if (!isDilation)
-			c = Color(1.0, 1.0, 1.0);
-
-		for (int i = 0; i < kHeight; ++i)
-		{
-			for (int j = 0; j < kWidth; ++j)
-			{
-				int row = x + i - 0.5 * (kHeight - 1);
-				int col = y + j - 0.5 * (kWidth - 1);
-				clampImgBound(row, col);
-				int pix = (row * width + col) * 3;
-				Color neighborColor(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
-
-				int index = i * kWidth + j;
-				if (neighborColor.r > 0)
-				{
-					index = index;
-				}
-				Color c2 = neighborColor * weights[index];
-				if (isDilation)
-					c = c2 > c ? c2 : c;
-				else
-					c = c2 < c ? c2 : c;
-			}
-		}
-
-		if (isDilation)
-			c = c / maxWeight;
-		else 
-			c = c / minWeight;
-		return c;
 	}
 };
 
@@ -491,7 +512,7 @@ void render()
 					// Select any ONE filter type
 					// Select any ONE filter within the type
 
-					ConvolutionFilter k(9, 9);
+					//ConvolutionFilter k(9, 9);
 					//k.boxFilter();
 					//k.radialFilter();
 					//k.motionFilter();
@@ -500,12 +521,12 @@ void render()
 					//k.dilationFilter();
 					//k.erosionFilter();
 
-					//DerivativeFilter k(3, 3);
+					DerivativeFilter k(3, 3);
 					//k.embossFilter1();
 					//k.embossFilter2();
 					//k.embossFilter3();
 					//k.embossFilter4();
-					//k.edgeFilter();
+					k.edgeFilter();
 
 					Color c = k.eval(i, j);
 
