@@ -146,7 +146,8 @@ void HSVtoRGB(int& R, int& G, int& B, double h, double s, double v)
 
 double randomGen(double min = 0.0, double max = 1.0)
 {
-	std::default_random_engine generator(428697);
+	static std::random_device rd;
+	std::default_random_engine generator(rd());
 	std::uniform_real_distribution<double> distribution(min, max);
 	return distribution(generator);
 }

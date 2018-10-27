@@ -5,6 +5,7 @@
     <ClInclude Include="header\image.hpp" />
     <ClInclude Include="header\main.hpp" />
     <ClInclude Include="header\utility.hpp" />
+    <ClInclude Include="header\matrix.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ppm\cube.ppm" />

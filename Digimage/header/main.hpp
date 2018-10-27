@@ -12,10 +12,12 @@
 #include "ppm.hpp"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "matrix.hpp"
 
-// #define RASTERIZES_SHAPES
+// #define CONVOLUTION_FILTERS
+// #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
-// #define ANTIALIASING
+#define ANTIALIASING
 
 int width, height;
 std::vector<uint8_t> pixmap;
@@ -311,6 +313,7 @@ public:
 		absWeightSum = 8;
 	}
 
+	// try thresholding for better results
 	void edgeFilter()
 	{
 		isEdge = true;
@@ -440,113 +443,6 @@ public:
 	}
 };
 
-void render()
-{
-#ifdef RASTERIZES_SHAPES
-	width = 800;
-	height = 800;
-	pixmap.clear();
-	pixmap.resize(width * height * 3);
-#endif
-
-#pragma omp parellel for
-	for (int i = 0; i < height; ++i)
-	{
-		for (int j = 0; j < width; ++j)
-		{
-			int p = (i * width + j) * 3;
-
-#ifdef PROCEDURAL_IMAGE_GEN
-			double y = double(i) / double(height);
-			double x = double(j) / double(width);
-			double r = randomGen();
-
-			// 1.ppm
-			pixmap[p + 0] = (1 + sin(10 * y)) * x * 0.5 * 255;
-			pixmap[p + 1] = x * y * 255;
-			pixmap[p + 2] = 0x60;
-
-			// 2.ppm
-			pixmap[p + 0] = x * 255;
-			pixmap[p + 1] = (x * y) * 1.0 * 255;
-			pixmap[p + 2] = (x + y) * 0.5 * 255;
-
-			// 3.ppm
-			if (i == 0 || j == 0)
-				continue;
-			int p_upLeft = ((i - 1) * width + (j - 1)) * 3;
-			pixmap[p + 0] += pixmap[p_upLeft + 0] + r * x * 10 * 255;
-			pixmap[p + 1] += pixmap[p_upLeft + 1] + r * y * 10 * 255;
-			pixmap[p + 2] += pixmap[p_upLeft + 2] + r * x * y * 100 * 255;
-			
-			return;
-#endif
-
-#ifdef ANTIALIASING
-			int subX = 10;
-			int subY = 10;
-			double rx = randomGen(0.0, 1.0 / subX);
-			double ry = randomGen(0.0, 1.0 / subY);
-#else
-			int subX = 1;
-			int subY = 1;
-			double rx = 0.5;
-			double ry = 0.5;
-#endif
-			double weighted = 1.0 / (subX * subY);
-			double r = 0, g = 0, b = 0;
-			double X, Y, x, y;
-
-			for (int py = 0; py < subY; ++py)
-			{
-				for (int px = 0; px < subX; ++px)
-				{
-					Y = i + ry + (py + 0.5) / subY;
-					X = j + rx + (px + 0.5) / subX;
-					y = Y / height;
-					x = X / width;
-
-#ifdef RASTERIZES_SHAPES
-					Color c = shaded(X, Y);
-#endif
-					// Select any ONE filter type
-					// Select any ONE filter within the type
-
-					//ConvolutionFilter k(9, 9);
-					//k.boxFilter();
-					//k.radialFilter();
-					//k.motionFilter();
-
-					//MorphologicalFilter k(9, 9);
-					//k.dilationFilter();
-					//k.erosionFilter();
-
-					DerivativeFilter k(3, 3);
-					//k.embossFilter1();
-					//k.embossFilter2();
-					//k.embossFilter3();
-					//k.embossFilter4();
-					k.edgeFilter();
-
-					Color c = k.eval(i, j);
-
-					r += c.r * weighted;
-					g += c.g * weighted;
-					b += c.b * weighted;
-				}
-			}
-
-			// store in a different pixmap; 
-			// if you use same one, the next pixels will use convoluted pixel colors instead of input pixel colors
-			pixmap2[p + 0] = (uint8_t)(r * 255);
-			pixmap2[p + 1] = (uint8_t)(g * 255);
-			pixmap2[p + 2] = (uint8_t)(b * 255);
-		}
-	}
-
-	pixmap = std::move(pixmap2);
-}
-
 double pieceWiseLinearInterpolation(std::vector<double>& curveParam, double c)
 {
 // stored as (r0, r1, r2, r3 ..., rn)
@@ -661,4 +557,133 @@ void replaceHues(Image& src, Image& dst)
 			pixmap[p + 2] = (uint8_t)(b);
 		}
 	}
+}
+
+void inverseTransform(double& X, double& Y)
+{
+	X *= 2;
+	Y *= 2;
+	return;
+	X += 100;
+	Y += 100;
+	double t1 = X * cos(30 * 3.14 / 180.0) - Y * sin(30 * 3.14 / 180);
+	double t2 = X * sin(30 * 3.14 / 180.0) + Y * cos(30 * 3.14 / 180);
+	X = t1;
+	Y = t2;
+}
+
+void render()
+{
+#ifdef RASTERIZED_SHAPES
+	width = 800;
+	height = 800;
+	pixmap.clear();
+	pixmap.resize(width * height * 3);
+#endif
+
+#pragma omp parellel for
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			int p = (i * width + j) * 3;
+
+#ifdef PROCEDURAL_IMAGE_GEN
+			double y = double(i) / double(height);
+			double x = double(j) / double(width);
+			double r = randomGen();
+
+			// 1.ppm
+			pixmap[p + 0] = (1 + sin(10 * y)) * x * 0.5 * 255;
+			pixmap[p + 1] = x * y * 255;
+			pixmap[p + 2] = 0x60;
+
+			// 2.ppm
+			pixmap[p + 0] = x * 255;
+			pixmap[p + 1] = (x * y) * 1.0 * 255;
+			pixmap[p + 2] = (x + y) * 0.5 * 255;
+
+			// 3.ppm
+			if (i == 0 || j == 0)
+				continue;
+			int p_upLeft = ((i - 1) * width + (j - 1)) * 3;
+			pixmap[p + 0] += pixmap[p_upLeft + 0] + r * x * 10 * 255;
+			pixmap[p + 1] += pixmap[p_upLeft + 1] + r * y * 10 * 255;
+			pixmap[p + 2] += pixmap[p_upLeft + 2] + r * x * y * 100 * 255;
+
+			return;
+#endif
+
+#ifdef ANTIALIASING
+			int subX = 3;
+			int subY = 3;
+			double rx = randomGen(0.0, 1.0 / subX);
+			double ry = randomGen(0.0, 1.0 / subY);
+#else
+			int subX = 1;
+			int subY = 1;
+			double rx = 0.5;
+			double ry = 0.5;
+#endif
+			double weighted = 1.0 / (subX * subY);
+			double r = 0, g = 0, b = 0;
+			double X, Y, x, y;
+
+			for (int py = 0; py < subY; ++py)
+			{
+				for (int px = 0; px < subX; ++px)
+				{
+					Y = i + ry + (py + 0.0) / subY; // py + 0.5
+					X = j + rx + (px + 0.0) / subX;
+
+					Color c;
+
+#ifdef RASTERIZED_SHAPES
+					c = shaded(X, Y);
+					// c = shapeColor(star(X, Y));
+#endif
+
+#ifdef CONVOLUTION_FILTERS
+					// Select any ONE filter type
+					// Select any ONE filter within the type
+
+					//ConvolutionFilter k(9, 9);
+					//k.boxFilter();
+					//k.radialFilter();
+					//k.motionFilter();
+
+					//MorphologicalFilter k(9, 9);
+					//k.dilationFilter();
+					//k.erosionFilter();
+
+					DerivativeFilter k(3, 3);
+					//k.embossFilter1();
+					//k.embossFilter2();
+					//k.embossFilter3();
+					//k.embossFilter4();
+					k.edgeFilter();
+
+					c = k.eval(i, j);
+#endif
+
+					inverseTransform(X, Y);
+					int pix = (int(Y) * width + int(X)) * 3;
+					if (pix < pixmap.size() && int(Y) < height && int(X) < width)
+						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+					
+					r += c.r * weighted;
+					g += c.g * weighted;
+					b += c.b * weighted;
+				}
+			}
+
+			// store in a different pixmap; 
+			// if you use same one, the next pixels will use convoluted pixel colors instead of input pixel colors
+			pixmap2[p + 0] = (uint8_t)(r * 255);
+			pixmap2[p + 1] = (uint8_t)(g * 255);
+			pixmap2[p + 2] = (uint8_t)(b * 255);
+		}
+	}
+
+	pixmap = std::move(pixmap2);
 }

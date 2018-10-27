@@ -2,7 +2,7 @@
 
 void setPixels()
 {
-	Image img = readPPM("ppm/bw.ppm");
+	Image img = readPPM("ppm/ca.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
@@ -11,8 +11,8 @@ void setPixels()
 
 	render();
 
-	Image outputImg(width, height, pixmap);
-	outputImg.flip();
+	//Image outputImg(width, height, pixmap);
+	//outputImg.flip();
 	//writePPM(outputImg, "ppm/ca2_m.ppm");
 }
 
