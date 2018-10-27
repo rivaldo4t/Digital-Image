@@ -2,7 +2,7 @@
 
 void setPixels()
 {
-	Image img = readPPM("ppm/ca.ppm");
+	Image img = readPPM("ppm/yo.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
@@ -11,9 +11,9 @@ void setPixels()
 
 	render();
 
-	//Image outputImg(width, height, pixmap);
-	//outputImg.flip();
-	//writePPM(outputImg, "ppm/ca2_m.ppm");
+	Image outputImg(width, height, pixmap);
+	outputImg.flip();
+	writePPM(outputImg, "ppm/yo_mod.ppm");
 }
 
 static void windowResize(int w, int h)

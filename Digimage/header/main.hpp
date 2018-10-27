@@ -561,15 +561,64 @@ void replaceHues(Image& src, Image& dst)
 
 void inverseTransform(double& X, double& Y)
 {
-	X *= 2;
-	Y *= 2;
-	return;
-	X += 100;
-	Y += 100;
-	double t1 = X * cos(30 * 3.14 / 180.0) - Y * sin(30 * 3.14 / 180);
-	double t2 = X * sin(30 * 3.14 / 180.0) + Y * cos(30 * 3.14 / 180);
-	X = t1;
-	Y = t2;
+	Vector v(X, Y, 1);
+	std::shared_ptr<Matrix> invM;
+	bool wrap = false;
+	
+	// Rotation
+	float theta = -30 * 3.14 / 180.0;
+	invM = std::make_shared<RotationMatrix>(theta);
+
+	// Scaling
+	float sx = 0.5, sy = 0.5;
+	//invM = std::make_shared<ScaleMatrix>(sx, sy);
+	
+	// Mirror
+	float mx = -1, my = 1;
+	//invM = std::make_shared<ScaleMatrix>(mx, my);
+	//wrap = true;
+
+	// Translation
+	float tx = -100, ty = -200;
+	//invM = std::make_shared<TranslateMatrix>(tx, ty);
+
+	// Shear
+	float shx = 1, shy = 0;
+	//invM = std::make_shared<ShearMatrix>(shx, shy);
+
+	// Perspective
+	float px = 0.0003, py = 0.0006;
+	//invM = std::make_shared<PerspectiveMatrix>(px, py);
+	
+	// Invert the matrix and apply transformation
+	invM->invertMatrix();
+	v = (*invM.get() * v);
+	v.normalize();
+	
+	// scale down to see other transformations clearly
+#if 1
+	invM = std::make_shared<ScaleMatrix>(0.5, 0.5);
+	invM->invertMatrix();
+	v = (*invM.get() * v);
+	v.normalize();
+#endif
+
+	// translate to see other transformations clearly
+#if 1	
+	invM = std::make_shared<TranslateMatrix>(400, 100);
+	invM->invertMatrix();
+	v = (*invM.get() * v);
+	v.normalize();
+#endif
+
+	X = v[0];
+	Y = v[1];
+	// wrap edges for mirror
+	if (wrap)
+	{
+		X = int(v[0] + width) % width;
+		Y = int(v[1] + height) % height;
+	}
 }
 
 void render()
@@ -668,7 +717,8 @@ void render()
 
 					inverseTransform(X, Y);
 					int pix = (int(Y) * width + int(X)) * 3;
-					if (pix < pixmap.size() && int(Y) < height && int(X) < width)
+					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)*/
+					if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
 						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
 					
 					r += c.r * weighted;
