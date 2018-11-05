@@ -36,11 +36,24 @@ c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(442): warning C42
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(456): warning C4018: '<': signed/unsigned mismatch
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(461): warning C4018: '>=': signed/unsigned mismatch
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(564): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(568): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(588): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(695): warning C4018: '<': signed/unsigned mismatch
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(696): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(654): warning C4101: 'y': unreferenced local variable
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(654): warning C4101: 'x': unreferenced local variable
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(569): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(590): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(626): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(820): warning C4018: '<': signed/unsigned mismatch
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(821): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(776): warning C4101: 'y': unreferenced local variable
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(776): warning C4101: 'x': unreferenced local variable
 c:\users\tushar\source\repos\digimage\digimage\source\main.cpp(10): warning C4244: 'argument': conversion from 'double' to 'const uint8_t', possible loss of data
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
+          with
+          [
+              _Ty=PerspectiveMatrix
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
+          with
+          [
+              _Ty=PerspectiveMatrix
+          ]
+  c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(632): note: see reference to function template instantiation 'std::shared_ptr<PerspectiveMatrix> std::make_shared<PerspectiveMatrix,double,double>(double &&,double &&)' being compiled
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Debug\Digimage.exe

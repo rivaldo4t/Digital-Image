@@ -567,7 +567,7 @@ void inverseTransform(double& X, double& Y)
 	
 	// Rotation
 	float theta = -30 * 3.14 / 180.0;
-	invM = std::make_shared<RotationMatrix>(theta);
+	//invM = std::make_shared<RotationMatrix>(theta);
 
 	// Scaling
 	float sx = 0.5, sy = 0.5;
@@ -587,8 +587,8 @@ void inverseTransform(double& X, double& Y)
 	//invM = std::make_shared<ShearMatrix>(shx, shy);
 
 	// Perspective
-	float px = 0.0003, py = 0.0006;
-	//invM = std::make_shared<PerspectiveMatrix>(px, py);
+	float px = 0.000, py = 0.003;
+	invM = std::make_shared<PerspectiveMatrix>(px, py);
 	
 	// Invert the matrix and apply transformation
 	invM->invertMatrix();
@@ -596,7 +596,7 @@ void inverseTransform(double& X, double& Y)
 	v.normalize();
 	
 	// scale down to see other transformations clearly
-#if 1
+#if 0
 	invM = std::make_shared<ScaleMatrix>(0.5, 0.5);
 	invM->invertMatrix();
 	v = (*invM.get() * v);
@@ -604,7 +604,7 @@ void inverseTransform(double& X, double& Y)
 #endif
 
 	// translate to see other transformations clearly
-#if 1	
+#if 0	
 	invM = std::make_shared<TranslateMatrix>(400, 100);
 	invM->invertMatrix();
 	v = (*invM.get() * v);
@@ -621,6 +621,109 @@ void inverseTransform(double& X, double& Y)
 	}
 }
 
+void getPerspectiveTransformedCorners(std::vector<std::vector<double>>& transFormedcorners)
+{
+	Vector vec0(0, 0, 1), vec1(0, height - 1, 1), vec2(width - 1, height - 1, 1), vec3(width - 1, 0, 1);
+	std::vector<Vector> cornerVectors{ vec0, vec1, vec2, vec3 };
+	
+	std::shared_ptr<Matrix> invM;
+
+#if 1
+	invM = std::make_shared<PerspectiveMatrix>(0.0004, 0.0004);
+	for (auto& corner : cornerVectors)
+	{
+		corner = (*invM.get() * corner);
+		corner.normalize();
+	}
+#endif
+#if 0
+	invM = std::make_shared<ScaleMatrix>(1, 1);
+	for (auto& corner : cornerVectors)
+	{
+		corner = (*invM.get() * corner);
+		corner.normalize();
+	}
+#endif
+#if 0
+	invM = std::make_shared<TranslateMatrix>(0, 0);
+	for (auto& corner : cornerVectors)
+	{
+		corner = (*invM.get() * corner);
+		corner.normalize();
+	}
+#endif
+
+	transFormedcorners.push_back({cornerVectors[0][0], cornerVectors[1][0], cornerVectors[2][0], cornerVectors[3][0] });
+	transFormedcorners.push_back({ cornerVectors[0][1], cornerVectors[1][1], cornerVectors[2][1], cornerVectors[3][1] });
+}
+
+void bilinearWarpTransform(double& X, double& Y, std::vector<std::vector<double>>& transFormedcorners)
+{
+	std::vector<double> x = transFormedcorners[0], y = transFormedcorners[1];
+
+	double a0, a1, a2, a3, b0, b1, b2, b3;
+	a0 = x[0];
+	a1 = x[3] - x[0];
+	a2 = x[1] - x[0];
+	a3 = x[2] - x[1] - x[3] + x[0];
+	b0 = y[0];
+	b1 = y[3] - y[0];
+	b2 = y[1] - y[0];
+	b3 = y[2] - y[1] - y[3] + y[0];
+	
+	double c0, c1, c2;
+	c0 = a1 * (b0 - Y) + b1 * (X - a0);
+	c1 = a3 * (b0 - Y) + b3 * (X - a0) + a1 * b2 - a2 * b1;
+	c2 = a3 * b2 - a2 * b3;
+	
+	double u1, v1, u2, v2, u, v;
+	v1 = -0.5 * (c1 / c2 - sqrt(c1 * c1 - 4 * c2 * c0) / c2);
+	v2 = -0.5 * (c1 / c2 + sqrt(c1 * c1 - 4 * c2 * c0) / c2);
+	u1 = (X - a0 - a2 * v1) / (a1 + a3 * v1);
+	u2 = (X - a0 - a2 * v2) / (a1 + a3 * v2);
+	
+	if (u1 >= 0 && u1 <= 1 && v1 >= 0 && v1 <= 1)
+	{
+		u = u1;
+		v = v1;
+	}
+	else if (u2 >= 0 && u2 <= 1 && v2 >= 0 && v2 <= 1)
+	{
+		u = u2;
+		v = v2;
+	}
+	else
+	{
+		X = -1;
+		Y = -1;
+		return;
+	}
+	
+	X = (int)((width - 1)*u + 0.5);
+	Y = (int)((height - 1)*v + 0.5);
+}
+
+void warpTransform(double& X, double& Y)
+{
+#if 0
+	// simple sine inverse transform
+	double x = X, y = Y;
+	double amp = 16;
+	X = x - amp * sin(y / amp);
+	Y = y - amp * sin(x / amp);
+#else
+	// twirl inverse transform
+	double a = 10, b = 50; // a = rotation of twirl, b = size of twirl
+	double twirlX = 400, twirlY = 200; // location of twirl
+	double x = X - twirlX, y = Y - twirlY;
+	double angle = abs(a*exp(-(x*x + y*y) / (b*b)));
+	double u = cos(angle)*x + sin(angle)*y;
+	double v = -sin(angle)*x + cos(angle)*y;
+	X = u + twirlX;
+	Y = v + twirlY;
+#endif
+}
+
 void render()
 {
 #ifdef RASTERIZED_SHAPES
@@ -629,6 +732,10 @@ void render()
 	pixmap.clear();
 	pixmap.resize(width * height * 3);
 #endif
+
+	// for bilinear warping
+	std::vector<std::vector<double>> transFormedcorners;
+	getPerspectiveTransformedCorners(transFormedcorners);
 
 #pragma omp parellel for
 	for (int i = 0; i < height; ++i)
@@ -715,7 +822,9 @@ void render()
 					c = k.eval(i, j);
 #endif
 
-					inverseTransform(X, Y);
+					//inverseTransform(X, Y);
+					//bilinearWarpTransform(X, Y, transFormedcorners);
+					warpTransform(X, Y);
 					int pix = (int(Y) * width + int(X)) * 3;
 					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)*/
 					if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)

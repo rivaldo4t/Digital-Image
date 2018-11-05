@@ -38,38 +38,27 @@ C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(461): warning C40
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(564): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(569): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(590): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(721): warning C4018: '<': signed/unsigned mismatch
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(722): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(679): warning C4101: 'y': unreferenced local variable
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(679): warning C4101: 'x': unreferenced local variable
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(626): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(830): warning C4018: '<': signed/unsigned mismatch
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(831): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(786): warning C4101: 'y': unreferenced local variable
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(786): warning C4101: 'x': unreferenced local variable
 source\main.cpp(10): warning C4244: 'argument': conversion from 'double' to 'const uint8_t', possible loss of data
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
           with
           [
-              _Ty=ScaleMatrix
+              _Ty=PerspectiveMatrix
           ]
   C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
           with
           [
-              _Ty=ScaleMatrix
+              _Ty=PerspectiveMatrix
           ]
-  C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(600): note: see reference to function template instantiation 'std::shared_ptr<ScaleMatrix> std::make_shared<ScaleMatrix,double,double>(double &&,double &&)' being compiled
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<int,int>(int &&,int &&)' being compiled
-          with
-          [
-              _Ty=TranslateMatrix
-          ]
-  C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<int,int>(int &&,int &&)' being compiled
-          with
-          [
-              _Ty=TranslateMatrix
-          ]
-  C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(608): note: see reference to function template instantiation 'std::shared_ptr<TranslateMatrix> std::make_shared<TranslateMatrix,int,int>(int &&,int &&)' being compiled
+  C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(632): note: see reference to function template instantiation 'std::shared_ptr<PerspectiveMatrix> std::make_shared<PerspectiveMatrix,double,double>(double &&,double &&)' being compiled
   Generating code
-  1 of 606 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
+  4 of 715 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
     10 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Release\Digimage.exe
