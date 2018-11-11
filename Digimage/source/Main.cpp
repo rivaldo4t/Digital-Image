@@ -7,13 +7,18 @@ void setPixels()
 	height = img.h;
 	img.flip();
 	pixmap = img.data;
-	pixmap2.resize(pixmap.size(), 0.0);
+
+	Image img2 = readPPM("ppm/yo.ppm");
+	width = img2.w;
+	height = img2.h;
+	img2.flip();
+	pixmap2 = img2.data;
 
 	render();
 
 	Image outputImg(width, height, pixmap);
 	outputImg.flip();
-	writePPM(outputImg, "ppm/yo2_mod.ppm");
+	//writePPM(outputImg, "ppm/yo2_mod.ppm");
 }
 
 static void windowResize(int w, int h)

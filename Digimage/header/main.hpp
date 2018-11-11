@@ -17,6 +17,7 @@
 // #define CONVOLUTION_FILTERS
 // #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
+// #define TRANSFORMATIONS
 #define ANTIALIASING
 
 int width, height;
@@ -724,6 +725,36 @@ void warpTransform(double& X, double& Y)
 #endif
 }
 
+Color compositeOperation(int pix)
+{
+	Color c0(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+	Color c1(pixmap2[pix + 0] / 255.0, pixmap2[pix + 1] / 255.0, pixmap2[pix + 2] / 255.0);
+	double alpha0 = 0.8, alpha1 = 0.8;
+	
+	Color compose;
+	int op = 7;
+	switch (op)
+	{
+		// Normal		
+		case 1: compose = c1; break;
+		// Multiply
+		case 2: compose = c0 * c1; break;
+		// Darken
+		case 3:compose = min(c1, c1); break;
+		// Linear Dodge
+		case 4:compose = c1 + c0; break;
+		// Lighter Color
+		case 5:compose = max(c0, c1); break;
+		// Difference
+		case 6:compose = c1 - c0; break;
+		// Exclusion
+		case 7:compose = Color(1.0) - c0 * c1; break;
+	}
+
+	compose.clamp();
+	return compose * alpha1 + c0 * (1 - alpha1);
+}
+
 void render()
 {
 #ifdef RASTERIZED_SHAPES
@@ -733,9 +764,11 @@ void render()
 	pixmap.resize(width * height * 3);
 #endif
 
+#ifdef TRANSFORMATIONS
 	// for bilinear warping
 	std::vector<std::vector<double>> transFormedcorners;
 	getPerspectiveTransformedCorners(transFormedcorners);
+#endif
 
 #pragma omp parellel for
 	for (int i = 0; i < height; ++i)
@@ -822,13 +855,18 @@ void render()
 					c = k.eval(i, j);
 #endif
 
+#ifdef TRANSFORMATIONS
 					//inverseTransform(X, Y);
 					//bilinearWarpTransform(X, Y, transFormedcorners);
 					warpTransform(X, Y);
+#endif
 					int pix = (int(Y) * width + int(X)) * 3;
 					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)*/
+					/*if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
+						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);*/
+
 					if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
-						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+						c = compositeOperation(pix);
 					
 					r += c.r * weighted;
 					g += c.g * weighted;

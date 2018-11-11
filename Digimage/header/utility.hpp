@@ -6,8 +6,12 @@ public:
 	float r, g, b;
 	Color() : r(0), g(0), b(0) {}
 	Color(float _r, float _g, float _b) : r(_r), g(_g), b(_b) {}
-	const Color operator * (float d) { return Color(r * d, g * d, b * d); }
-	const Color operator / (float d) { return Color(r / d, g / d, b / d); }
+	Color(float _c) : r(_c), g(_c), b(_c) {}
+	const Color& operator + (const Color& c) { return Color(r + c.r, g + c.g, b + c.b); }
+	const Color& operator - (const Color& c) { return Color(r - c.r, g - c.g, b - c.b); }
+	Color& operator * (float d) { return Color(r * d, g * d, b * d); }
+	const Color& operator * (const Color& c) { return Color(r * c.r, g * c.g, b * c.b); }
+	const Color& operator / (float d) { return Color(r / d, g / d, b / d); }
 	const Color& operator += (const Color& c) { r += c.r; g += c.g; b += c.b; return *this; }
 	bool operator > (const Color& c) { return (r > c.r && g > c.g && b > c.b); }
 	bool operator < (const Color& c) { return (r < c.r && g < c.g && b < c.b); }
@@ -38,6 +42,24 @@ T clamp(T val, T min = 0.0, T max = 1.0)
 	else if (val > max)
 		val = max;
 	return val;
+}
+
+Color min(const Color a, const Color b)
+{
+	Color c;
+	c.r = std::min(a.r, b.r);
+	c.g = std::min(a.g, b.g);
+	c.b = std::min(a.b, b.b);
+	return c;
+}
+
+Color max(const Color a, const Color b)
+{
+	Color c;
+	c.r = std::max(a.r, b.r);
+	c.g = std::max(a.g, b.g);
+	c.b = std::max(a.b, b.b);
+	return c;
 }
 
 void RGBtoHSV(int r, int g, int b, double &h, double &s, double &v)
