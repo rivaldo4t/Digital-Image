@@ -18,11 +18,12 @@
 // #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
 // #define TRANSFORMATIONS
-#define ANTIALIASING
+// #define ANTIALIASING
 
 int width, height;
 std::vector<uint8_t> pixmap;
 std::vector<uint8_t> pixmap2;
+std::vector<uint8_t> pixmap3;
 
 void clampImgBound(int& row, int& col)
 {
@@ -112,7 +113,7 @@ public:
 			k /= sum;
 	}
 
-	Color eval(int x, int y)
+	Color eval(int x, int y, int op = 0)
 	{
 		Color c;
 		
@@ -125,6 +126,9 @@ public:
 				clampImgBound(row, col);
 				int pix = (row * width + col) * 3;
 				Color neighborColor(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+				
+				if (op == 1)
+					neighborColor = Color(pixmap2[pix + 0] / 255.0, pixmap2[pix + 1] / 255.0, pixmap2[pix + 2] / 255.0);
 
 				int index = i * kWidth + j;
 
@@ -725,30 +729,76 @@ void warpTransform(double& X, double& Y)
 #endif
 }
 
-Color compositeOperation(int pix)
+ConvolutionFilter k(3, 3);
+Color compositeOperation(int pix, int i = 0, int j = 0)
 {
+	// bg
 	Color c0(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
+	// fg
 	Color c1(pixmap2[pix + 0] / 255.0, pixmap2[pix + 1] / 255.0, pixmap2[pix + 2] / 255.0);
-	double alpha0 = 0.8, alpha1 = 0.8;
-	
+	// alpha mask
+	Color c2(pixmap3[pix + 0] / 255.0, pixmap3[pix + 1] / 255.0, pixmap3[pix + 2] / 255.0);
+
+	double alpha0 = 0.5, alpha1 = 0.5;
 	Color compose;
-	int op = 7;
+	int op = 8;
+	
+	// Add support for associative over operation for multiple layer blending
+	
 	switch (op)
 	{
 		// Normal		
 		case 1: compose = c1; break;
+		
 		// Multiply
 		case 2: compose = c0 * c1; break;
+		
 		// Darken
-		case 3:compose = min(c1, c1); break;
+		case 3:compose = min(c0, c1); break;
+		
 		// Linear Dodge
 		case 4:compose = c1 + c0; break;
+		
 		// Lighter Color
 		case 5:compose = max(c0, c1); break;
+		
 		// Difference
 		case 6:compose = c1 - c0; break;
+		
 		// Exclusion
 		case 7:compose = Color(1.0) - c0 * c1; break;
+		
+		// Masking using Green Screen
+		case 8: {
+			// direct masking with bg and fg pixel color values
+			// gives sharper masks
+			//compose = c1; alpha1 = c2.r < 0.6 ? 0.0 : 1.0; break;
+			
+			// avg of bg and fg over a neighborhood of 3x3 or 9x9 pixels
+			// using convolution filter for calculating avg
+			// gives blurred mask with green halo
+			compose = c1; alpha1 = c2.r;
+			if (c2.r < 1.0 && c2.r > 0.0)
+			{
+				Color c00 = k.eval(i, j);
+				Color c11 = k.eval(i, j, 1);
+				compose = c11;
+				c0 = c00;
+				break;
+				Color c = c11 * alpha0 + c00 * (1 - alpha0);
+				Color a = (c - c00) / (c11 - c00);
+				if (a.r < 1 && a.r > 0)
+					alpha1 = a.r;
+				else if (a.g < 1 && a.g > 0)
+					alpha1 = a.g;
+				else
+					alpha1 = a.b;
+			}
+			break;
+		}
+		
+		// No composition
+		default:compose = c0; break;
 	}
 
 	compose.clamp();
@@ -757,6 +807,7 @@ Color compositeOperation(int pix)
 
 void render()
 {
+	k.boxFilter();
 #ifdef RASTERIZED_SHAPES
 	width = 800;
 	height = 800;
@@ -822,8 +873,8 @@ void render()
 			{
 				for (int px = 0; px < subX; ++px)
 				{
-					Y = i + ry + (py + 0.0) / subY; // py + 0.5
-					X = j + rx + (px + 0.0) / subX;
+					Y = i + ry + (py + 0.5) / subY;
+					X = j + rx + (px + 0.5) / subX;
 
 					Color c;
 
@@ -866,7 +917,7 @@ void render()
 						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);*/
 
 					if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
-						c = compositeOperation(pix);
+						c = compositeOperation(pix, i, j);
 					
 					r += c.r * weighted;
 					g += c.g * weighted;

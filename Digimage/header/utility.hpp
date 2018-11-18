@@ -7,11 +7,12 @@ public:
 	Color() : r(0), g(0), b(0) {}
 	Color(float _r, float _g, float _b) : r(_r), g(_g), b(_b) {}
 	Color(float _c) : r(_c), g(_c), b(_c) {}
-	const Color& operator + (const Color& c) { return Color(r + c.r, g + c.g, b + c.b); }
-	const Color& operator - (const Color& c) { return Color(r - c.r, g - c.g, b - c.b); }
-	Color& operator * (float d) { return Color(r * d, g * d, b * d); }
+	Color& operator + (const Color& c) { return Color(r + c.r, g + c.g, b + c.b); }
+	Color& operator - (const Color& c) { return Color(r - c.r, g - c.g, b - c.b); }
+	Color& operator * (const float d) { return Color(r * d, g * d, b * d); }
 	const Color& operator * (const Color& c) { return Color(r * c.r, g * c.g, b * c.b); }
-	const Color& operator / (float d) { return Color(r / d, g / d, b / d); }
+	Color& operator / (const Color& c) { return Color(r / c.r, g / c.g, b / c.b); }
+	Color& operator / (const float d) { return Color(r / d, g / d, b / d); }
 	const Color& operator += (const Color& c) { r += c.r; g += c.g; b += c.b; return *this; }
 	bool operator > (const Color& c) { return (r > c.r && g > c.g && b > c.b); }
 	bool operator < (const Color& c) { return (r < c.r && g < c.g && b < c.b); }

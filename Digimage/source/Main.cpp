@@ -2,23 +2,26 @@
 
 void setPixels()
 {
-	Image img = readPPM("ppm/yo2.ppm");
+	// make sure all images have same size
+	Image img = readPPM("ppm/mp.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
 	pixmap = img.data;
 
-	Image img2 = readPPM("ppm/yo.ppm");
-	width = img2.w;
-	height = img2.h;
+	Image img2 = readPPM("ppm/dp_green.ppm");
 	img2.flip();
 	pixmap2 = img2.data;
+
+	Image img3 = readPPM("ppm/dp_alpha.ppm");
+	img3.flip();
+	pixmap3 = img3.data;
 
 	render();
 
 	Image outputImg(width, height, pixmap);
 	outputImg.flip();
-	//writePPM(outputImg, "ppm/yo2_mod.ppm");
+	writePPM(outputImg, "ppm/blend_comp_3.ppm");
 }
 
 static void windowResize(int w, int h)
