@@ -18,6 +18,9 @@
 // #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
 // #define TRANSFORMATIONS
+// #define COMPOSITIONS
+
+#define DITHERING
 // #define ANTIALIASING
 
 int width, height;
@@ -729,6 +732,7 @@ void warpTransform(double& X, double& Y)
 #endif
 }
 
+// init in main
 ConvolutionFilter k(3, 3);
 Color compositeOperation(int pix, int i = 0, int j = 0)
 {
@@ -805,9 +809,310 @@ Color compositeOperation(int pix, int i = 0, int j = 0)
 	return compose * alpha1 + c0 * (1 - alpha1);
 }
 
+Color floydSteinbergDither(int i, int j)
+{
+	// diffuses the error to 4 unprocessed neighboring pixels
+
+	int pix = (i * width + j) * 3;
+	int ny, nx, nc, np;
+	float oldColorR, oldColorG, oldColorB;
+	float newColorR, newColorG, newColorB;
+	float quant_errorR, quant_errorG, quant_errorB;
+
+	oldColorR = pixmap[pix] / 255.0;
+	if (oldColorR < 0.25)
+		newColorR = 0;
+	else if (oldColorR >= 0.25 && oldColorR < 0.5)
+		newColorR = 0.3;
+	else if (oldColorR >= 0.5 && oldColorR < 0.75)
+		newColorR = 0.7;
+	else
+		newColorR = 1.0;
+
+	oldColorG = pixmap[pix + 1] / 255.0;
+	if (oldColorG < 0.25)
+		newColorG = 0;
+	else if (oldColorG >= 0.25 && oldColorG < 0.5)
+		newColorG = 0.3;
+	else if (oldColorG >= 0.5 && oldColorG < 0.75)
+		newColorG = 0.7;
+	else
+		newColorG = 1.0;
+
+	oldColorB = pixmap[pix + 2] / 255.0;
+	if (oldColorB < 0.25)
+		newColorB = 0;
+	else if (oldColorB >= 0.25 && oldColorB < 0.5)
+		newColorB = 0.3;
+	else if (oldColorB >= 0.5 && oldColorB < 0.75)
+		newColorB = 0.7;
+	else
+		newColorB = 1.0;
+
+	quant_errorR = oldColorR - newColorR;
+	quant_errorG = oldColorG - newColorG;
+	quant_errorB = oldColorB - newColorB;
+
+	ny = i; nx = j + 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 7 / 16 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 7 / 16 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 7 / 16 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j - 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 3 / 16 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 3 / 16 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 3 / 16 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 5 / 16 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 5 / 16 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 5 / 16 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j + 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 1 / 16 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 1 / 16 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 1 / 16 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	return Color(newColorR, newColorG, newColorB);
+}
+
+Color burkesDither(int i, int j)
+{
+	// modification of floydSteinberg method
+	// diffuses the error to 7 unprocessed neighboring pixels
+
+	int pix = (i * width + j) * 3;
+	int ny, nx, nc, np;
+	float oldColorR, oldColorG, oldColorB;
+	float newColorR, newColorG, newColorB;
+	float quant_errorR, quant_errorG, quant_errorB;
+
+	oldColorR = pixmap[pix] / 255.0;
+	if (oldColorR < 0.25)
+		newColorR = 0;
+	else if (oldColorR >= 0.25 && oldColorR < 0.5)
+		newColorR = 0.3;
+	else if (oldColorR >= 0.5 && oldColorR < 0.75)
+		newColorR = 0.7;
+	else
+		newColorR = 1.0;
+
+	oldColorG = pixmap[pix + 1] / 255.0;
+	if (oldColorG < 0.25)
+		newColorG = 0;
+	else if (oldColorG >= 0.25 && oldColorG < 0.5)
+		newColorG = 0.3;
+	else if (oldColorG >= 0.5 && oldColorG < 0.75)
+		newColorG = 0.7;
+	else
+		newColorG = 1.0;
+
+	oldColorB = pixmap[pix + 2] / 255.0;
+	if (oldColorB < 0.25)
+		newColorB = 0;
+	else if (oldColorB >= 0.25 && oldColorB < 0.5)
+		newColorB = 0.3;
+	else if (oldColorB >= 0.5 && oldColorB < 0.75)
+		newColorB = 0.7;
+	else
+		newColorB = 1.0;
+
+	quant_errorR = oldColorR - newColorR;
+	quant_errorG = oldColorG - newColorG;
+	quant_errorB = oldColorB - newColorB;
+
+	ny = i; nx = j + 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 8 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 8 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 8 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j + 2;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 4 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 4 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 4 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j - 2;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 2 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 2 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 2 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j - 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 4 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 4 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 4 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 8 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 8 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 8 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j + 1;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 4 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 4 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 4 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	ny = i + 1; nx = j + 2;
+	np = (ny * width + nx) * 3;
+	nc = pixmap[np];
+	nc += quant_errorR * 2 / 32 * 255;
+	pixmap[np] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 1];
+	nc += quant_errorG * 2 / 32 * 255;
+	pixmap[np + 1] = nc > 255 ? 255 : nc;
+	nc = pixmap[np + 2];
+	nc += quant_errorB * 2 / 32 * 255;
+	pixmap[np + 2] = nc > 255 ? 255 : nc;
+
+	return Color(newColorR, newColorG, newColorB);
+}
+
+Color randomDither(int i, int j)
+{
+	// randomly dither into 3 colors
+	int np = (i * width + j) * 3;
+	int nc = pixmap[np];
+	nc += int(randomGen(0, 255));
+	if (nc < 255 / 4)
+		nc = 255 / 4;
+	else if (nc < 255 / 2)
+		nc = 255 / 2;
+	else
+		nc = 255;
+	return Color(nc, nc, nc);
+}
+
+Color bayerDither(int i, int j)
+{
+	// Ordered dithering using Bayer matrices
+
+	int np = (i * width + j) * 3;
+	int nc = pixmap[np];
+	 std::vector<std::vector<int>> D{ {3, 1}, {0, 2} };
+	/*std::vector<std::vector<int>> D{	{ 1, 9, 3, 11 },
+										{ 13, 5, 15, 7 },
+										{ 4, 12, 2, 10 },
+										{ 16, 8, 14, 6 }	};*/
+	int n = D.size();
+	int y = i % n;
+	int x = j % n;
+	int threshold = D[y][x];
+	float r = 10;// n*n;
+	
+	float oldColorR, oldColorG, oldColorB;
+	float newColorR, newColorG, newColorB;
+
+	oldColorR = pixmap[np] / 255.0;
+	oldColorR += float(threshold) / r;
+	if (oldColorR < 0.25)
+		newColorR = 0;
+	else if (oldColorR >= 0.25 && oldColorR < 0.5)
+		newColorR = 0.3;
+	else if (oldColorR >= 0.5 && oldColorR < 0.75)
+		newColorR = 0.7;
+	else
+		newColorR = 1.0;
+
+	oldColorG = pixmap[np + 1] / 255.0;
+	oldColorG += float(threshold) / r;
+	if (oldColorG < 0.25)
+		newColorG = 0;
+	else if (oldColorG >= 0.25 && oldColorG < 0.5)
+		newColorG = 0.3;
+	else if (oldColorG >= 0.5 && oldColorG < 0.75)
+		newColorG = 0.7;
+	else
+		newColorG = 1.0;
+
+	oldColorB = pixmap[np + 2] / 255.0;
+	oldColorB += float(threshold) / r;
+	if (oldColorB < 0.25)
+		newColorB = 0;
+	else if (oldColorB >= 0.25 && oldColorB < 0.5)
+		newColorB = 0.3;
+	else if (oldColorB >= 0.5 && oldColorB < 0.75)
+		newColorB = 0.7;
+	else
+		newColorB = 1.0;
+
+	return Color(newColorR, newColorG, newColorB);
+}
+
 void render()
 {
+#ifdef COMPOSTION
 	k.boxFilter();
+#endif
+
 #ifdef RASTERIZED_SHAPES
 	width = 800;
 	height = 800;
@@ -912,12 +1217,32 @@ void render()
 					warpTransform(X, Y);
 #endif
 					int pix = (int(Y) * width + int(X)) * 3;
-					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)*/
-					/*if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
-						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);*/
-
+#ifdef COMPOSITIONS
 					if (pix < pixmap.size() && Y < height && X < width && Y >= 0 && X >= 0)
 						c = compositeOperation(pix, i, j);
+#endif
+
+#ifdef DITHERING
+					if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)
+					{
+						// Enable any one of the following 
+
+						// Random Dithering algorithm
+						//c = randomDither(i, j);
+
+						// each of the following uses 4 values per channel, that is, 64 color palette
+
+						// Unordered or Error-Diffusion Dithering algorithms
+						//c = floydSteinbergDither(i, j);
+						//c = burkesDither(i, j);
+
+						// Ordered Dithering algorithms
+						c = bayerDither(i, j);
+					}
+#endif
+
+					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)
+						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);*/
 					
 					r += c.r * weighted;
 					g += c.g * weighted;
