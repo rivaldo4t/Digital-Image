@@ -8,7 +8,7 @@ void setPixels()
 	height = img.h;
 	img.flip();
 	pixmap = img.data;
-	pixmap2 = pixmap;
+	pixmap2 = pixmap; // resize instead of copy
 	
 	/*Image img2 = readPPM("ppm/dp_green.ppm");
 	img2.flip();
@@ -18,11 +18,19 @@ void setPixels()
 	img3.flip();
 	pixmap3 = img3.data;*/
 
-	render();
+	//render();
 
-	Image outputImg(width, height, pixmap);
+	/*Image outputImg(width, height, pixmap);
 	outputImg.flip();
-	writePPM(outputImg, "ppm/dither_o.ppm");
+	writePPM(outputImg, "ppm/dither_o.ppm");*/
+
+	int deleteNumPixels = 10;
+	for (int w = 0; w < deleteNumPixels; w++)
+	{
+		Image outputImg(width, height, pixmap);
+		outputImg.flip();
+		//writePPM(outputImg, "ppm/seam_"+ std::to_string(w) + ".ppm");
+	}
 }
 
 static void windowResize(int w, int h)
