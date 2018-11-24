@@ -3,7 +3,7 @@
 void setPixels()
 {
 	// make sure all images have same size
-	Image img = readPPM("ppm/smp.ppm");
+	Image img = readPPM("ppm/carv2.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
@@ -23,13 +23,23 @@ void setPixels()
 	/*Image outputImg(width, height, pixmap);
 	outputImg.flip();
 	writePPM(outputImg, "ppm/dither_o.ppm");*/
+	
 
-	int deleteNumPixels = 10;
+	// seam carving
+	int deleteNumPixels = 200;
 	for (int w = 0; w < deleteNumPixels; w++)
 	{
-		Image outputImg(width, height, pixmap);
-		outputImg.flip();
-		//writePPM(outputImg, "ppm/seam_"+ std::to_string(w) + ".ppm");
+		calculateEnergy(w);
+		calculateMinEnergy(w);
+		deleteSeam(w);
+		
+		Image outputImg1(width, height, pixmap2);
+		outputImg1.flip();
+		writePPM(outputImg1, "ppm/seam_" + std::to_string(2*w) + ".ppm");
+
+		Image outputImg2(width, height, pixmap);
+		outputImg2.flip();
+		writePPM(outputImg2, "ppm/seam_"+ std::to_string(2*w+1) + ".ppm");
 	}
 }
 

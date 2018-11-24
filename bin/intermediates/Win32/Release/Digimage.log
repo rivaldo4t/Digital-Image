@@ -13,103 +13,103 @@ c:\users\tushar\source\repos\digimage\digimage\header\utility.hpp(246): warning 
 c:\users\tushar\source\repos\digimage\digimage\header\utility.hpp(255): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\tushar\source\repos\digimage\digimage\header\utility.hpp(256): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\tushar\source\repos\digimage\digimage\header\utility.hpp(257): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(66): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(114): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(132): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(133): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(136): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(139): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(185): warning C4305: '=': truncation from 'int' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(214): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(215): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(218): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(263): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(300): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(350): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(366): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(381): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(382): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(385): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(442): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(443): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(446): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(456): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(470): warning C4018: '<': signed/unsigned mismatch
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(475): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(578): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(583): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(604): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(640): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(746): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(36): warning C4305: 'initializing': truncation from 'int' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(68): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(116): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(134): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(135): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(138): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(141): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(187): warning C4305: '=': truncation from 'int' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(216): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(217): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(220): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(265): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(302): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(352): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(368): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(383): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(384): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(387): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(444): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(445): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(448): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(458): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(472): warning C4018: '<': signed/unsigned mismatch
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(477): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(580): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(585): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(606): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(642): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(748): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(750): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(798): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(815): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(828): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(832): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(752): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(800): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(817): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(830): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(834): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(838): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(842): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(836): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(840): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(844): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(848): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(852): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(846): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(850): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(854): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(865): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(868): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(871): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(877): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(880): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(883): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(889): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(892): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(895): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(901): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(904): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(907): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(924): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(928): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(856): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(867): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(870): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(873): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(879): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(882): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(885): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(891): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(894): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(897): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(903): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(906): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(909): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(926): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(930): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(934): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(938): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(932): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(936): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(940): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(944): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(948): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(942): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(946): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(950): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(961): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(964): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(967): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(973): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(976): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(979): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(985): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(988): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(991): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(997): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1000): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1003): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1009): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1012): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1015): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1021): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1024): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1027): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1033): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1036): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1039): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1057): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1080): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1085): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(952): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(963): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(966): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(969): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(975): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(978): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(981): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(987): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(990): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(993): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(999): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1002): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1005): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1011): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1014): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1017): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1023): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1026): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1029): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1035): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1038): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1041): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1059): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1082): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1087): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1091): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1096): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1089): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1093): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1098): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1102): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1107): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1100): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1104): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1109): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1268): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1276): warning C4305: 'initializing': truncation from 'int' to 'float'
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1185): warning C4101: 'y': unreferenced local variable
-C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1185): warning C4101: 'x': unreferenced local variable
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1111): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1144): warning C4305: '=': truncation from 'int' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1280): warning C4101: 'y': unreferenced local variable
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1280): warning C4101: 'x': unreferenced local variable
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
           with
@@ -121,10 +121,10 @@ C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.1
           [
               _Ty=PerspectiveMatrix
           ]
-  C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(646): note: see reference to function template instantiation 'std::shared_ptr<PerspectiveMatrix> std::make_shared<PerspectiveMatrix,double,double>(double &&,double &&)' being compiled
+  C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(648): note: see reference to function template instantiation 'std::shared_ptr<PerspectiveMatrix> std::make_shared<PerspectiveMatrix,double,double>(double &&,double &&)' being compiled
   Generating code
-  2 of 478 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  3 of 501 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+    20 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Release\Digimage.exe

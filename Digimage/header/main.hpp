@@ -17,7 +17,7 @@
 #include <math.h>
 #include "matrix.hpp"
 
-#define CONVOLUTION_FILTERS
+// #define CONVOLUTION_FILTERS
 // #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
 // #define TRANSFORMATIONS
@@ -32,6 +32,8 @@ std::vector<uint8_t> pixmap2;
 std::vector<uint8_t> pixmap3;
 std::vector<float> energy;
 std::vector<std::pair<float, int>> minEnergy;
+int minEnergyColIndex = -1;
+float minEnergyPixelVal = INT_MAX;
 
 void clampImgBound(int& row, int& col)
 {
@@ -1113,10 +1115,101 @@ Color bayerDither(int i, int j)
 	return Color(newColorR, newColorG, newColorB);
 }
 
-static int widthReduce = 0;
-void seamCarving()
+void calculateEnergy(int offset)
 {
+	int newWidth = width - offset;
+	energy.resize(height * width, 0.0f);
 
+#pragma omp parellel for
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < newWidth; ++j)
+		{
+			int p = (i * width + j) * 3;
+			Color c;
+
+			DerivativeFilter k(3, 3);
+			k.edgeFilter();
+			c = k.eval(i, j);
+			energy[i * width + j] = c.r;
+		}
+	}
+}
+
+void calculateMinEnergy(int offset)
+{
+	int newWidth = width - offset;
+	minEnergy.resize(height * width, std::make_pair(0.0f, -1));
+	minEnergyColIndex = -1;
+	minEnergyPixelVal = INT_MAX;
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < newWidth; ++j)
+		{
+			int loc = i * width + j;
+			if (i == 0)
+			{
+				minEnergy[loc].first = energy[loc];
+				continue;
+			}
+			else
+			{
+				int top = (i - 1) * width + (j);
+				int topleft = j < 1 ? top : (i - 1) * width + (j - 1);
+				int topright = j > newWidth - 2 ? top : (i - 1) * width + (j + 1);
+				int prevSeamIndex;
+				float minE = std::min(std::min(minEnergy[topleft].first, minEnergy[top].first), minEnergy[topright].first);
+				if (minE == minEnergy[topleft].first)
+					prevSeamIndex = j < 1 ? j : j - 1;
+				else if (minE == minEnergy[topright].first)
+					prevSeamIndex = j > newWidth - 2 ? j : j + 1;
+				else
+					prevSeamIndex = j;
+				minEnergy[loc].first = energy[loc] + minE;
+				minEnergy[loc].second = prevSeamIndex;
+			}
+			if (i == height - 1 && minEnergy[loc].first < minEnergyPixelVal)
+			{
+				minEnergyPixelVal = minEnergy[loc].first;
+				minEnergyColIndex = j;
+			}
+		}
+	}
+}
+
+void deleteSeam(int offset)
+{
+	pixmap2 = pixmap;
+	int newWidth = width - offset;
+	int currIndex = minEnergyColIndex;
+	for (int i = height - 1; i >= 0; --i)
+	{
+		int loc = i * width + currIndex;
+		
+		// display seam to be deleted
+		int p = loc * 3;
+		pixmap2[p + 0] = 255;
+		pixmap2[p + 1] = 0;
+		pixmap2[p + 2] = 0;
+
+		// delete the seam
+		int pixIndex, jj, nextPixIndex;
+		for (jj = currIndex; jj < newWidth - 1; ++jj)
+		{
+			pixIndex = (i * width + jj) * 3;
+			nextPixIndex = pixIndex + 3;
+			pixmap[pixIndex + 0] = pixmap[nextPixIndex + 0];
+			pixmap[pixIndex + 1] = pixmap[nextPixIndex + 1];
+			pixmap[pixIndex + 2] = pixmap[nextPixIndex + 2];
+		}
+		pixIndex = (i * width + jj) * 3;
+		pixmap[pixIndex + 0] = 0;
+		pixmap[pixIndex + 1] = 255;
+		pixmap[pixIndex + 2] = 0;
+
+		int prev = minEnergy[loc].second;
+		currIndex = prev;
+	}
 }
 
 void render()
@@ -1137,9 +1230,6 @@ void render()
 	std::vector<std::vector<double>> transFormedcorners;
 	getPerspectiveTransformedCorners(transFormedcorners);
 #endif
-
-	energy.resize(height * width, 0.0f);
-	minEnergy.resize(height * width, std::make_pair(0.0f, -1));
 
 #pragma omp parellel for
 	for (int i = 0; i < height; ++i)
@@ -1270,76 +1360,8 @@ void render()
 			pixmap2[p + 0] = (uint8_t)(r * 255);
 			pixmap2[p + 1] = (uint8_t)(g * 255);
 			pixmap2[p + 2] = (uint8_t)(b * 255);
-			energy[i * width + j] = r;
 		}
 	}
 
-	//pixmap = std::move(pixmap2);
-	//return;
-
-	int minEnergyColIndex = -1;
-	float minEnergyPixelVal = INT_MAX;
-	for (int i = 0; i < height; ++i)
-	{
-		for (int j = 0; j < width - widthReduce; ++j)
-		{
-			int loc = i * width + j;
-			if (i == 0)
-			{
-				minEnergy[loc].first = energy[loc];
-				continue;
-			}
-			else
-			{
-				int top = (i - 1) * width + (j);
-				int topleft = j < 1 ? top : (i - 1) * width + (j - 1);
-				int topright = j > width - 2 ? top : (i - 1) * width + (j + 1);
-				int prevSeamIndex;
-				float minE = std::min(std::min(minEnergy[topleft].first, minEnergy[top].first), minEnergy[topright].first);
-				if (minE == minEnergy[topleft].first)
-					prevSeamIndex = j < 1 ? j : j - 1;
-				else if (minE == minEnergy[topright].first)
-					prevSeamIndex = j > width - 2 ? j : j + 1;
-				else
-					prevSeamIndex = j;
-				minEnergy[loc].first = energy[loc] + minE;
-				minEnergy[loc].second = prevSeamIndex;
-			}
-			if (i == height - 1 && minEnergy[loc].first < minEnergyPixelVal)
-			{
-				minEnergyPixelVal = minEnergy[loc].first;
-				minEnergyColIndex = j;
-			}
-		}
-	}
-
-	int currIndex = minEnergyColIndex;
-	for (int i = height - 1; i >= 0; --i)
-	{
-		int loc = i * width + currIndex;
-#if 1
-		int p = loc * 3;
-		pixmap[p + 0] = 255;
-		pixmap[p + 1] = 0;
-		pixmap[p + 2] = 0;
-#else
-		int pixIndex, jj, nextPixIndex;
-		for (jj = currIndex; jj < width - 1 - widthReduce; ++jj)
-		{
-			pixIndex = (i * width + jj) * 3;
-			nextPixIndex = pixIndex + 3;
-			pixmap[pixIndex + 0] = pixmap[nextPixIndex + 0];
-			pixmap[pixIndex + 1] = pixmap[nextPixIndex + 1];
-			pixmap[pixIndex + 2] = pixmap[nextPixIndex + 2];
-		}
-		pixIndex = (i * width + jj) * 3;
-		pixmap[pixIndex + 0] = 0;
-		pixmap[pixIndex + 1] = 255;
-		pixmap[pixIndex + 2] = 0;
-#endif
-		int prev = minEnergy[loc].second;
-		currIndex = prev;
-	}
-
-	//widthReduce++;
+	pixmap = std::move(pixmap2);
 }
