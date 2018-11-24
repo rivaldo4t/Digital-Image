@@ -751,9 +751,9 @@ Color compositeOperation(int pix, int i = 0, int j = 0)
 	// alpha mask
 	Color c2(pixmap3[pix + 0] / 255.0, pixmap3[pix + 1] / 255.0, pixmap3[pix + 2] / 255.0);
 
-	double alpha0 = 0.5, alpha1 = 0.5;
+	double alpha0 = 0.5, alpha1 = 1.0;
 	Color compose;
-	int op = 8;
+	int op = 6;
 	
 	// Add support for associative over operation for multiple layer blending
 	
@@ -1115,7 +1115,7 @@ Color bayerDither(int i, int j)
 	return Color(newColorR, newColorG, newColorB);
 }
 
-void calculateEnergy(int offset)
+void calculateEnergy(int offset = 0)
 {
 	int newWidth = width - offset;
 	energy.resize(height * width, 0.0f);
@@ -1136,12 +1136,14 @@ void calculateEnergy(int offset)
 	}
 }
 
-void calculateMinEnergy(int offset)
+void calculateMinEnergy(int offset = 0)
 {
-	int newWidth = width - offset;
 	minEnergy.resize(height * width, std::make_pair(0.0f, -1));
 	minEnergyColIndex = -1;
 	minEnergyPixelVal = INT_MAX;
+	int newWidth = width - offset;
+
+#pragma omp parellel for
 	for (int i = 0; i < height; ++i)
 	{
 		for (int j = 0; j < newWidth; ++j)
@@ -1159,12 +1161,13 @@ void calculateMinEnergy(int offset)
 				int topright = j > newWidth - 2 ? top : (i - 1) * width + (j + 1);
 				int prevSeamIndex;
 				float minE = std::min(std::min(minEnergy[topleft].first, minEnergy[top].first), minEnergy[topright].first);
-				if (minE == minEnergy[topleft].first)
-					prevSeamIndex = j < 1 ? j : j - 1;
-				else if (minE == minEnergy[topright].first)
-					prevSeamIndex = j > newWidth - 2 ? j : j + 1;
-				else
+				if (minE == minEnergy[top].first)
 					prevSeamIndex = j;
+				else if (minE == minEnergy[topleft].first)
+					prevSeamIndex = j < 1 ? j : j - 1;
+				else
+					prevSeamIndex = j > newWidth - 2 ? j : j + 1;
+				
 				minEnergy[loc].first = energy[loc] + minE;
 				minEnergy[loc].second = prevSeamIndex;
 			}
@@ -1177,7 +1180,7 @@ void calculateMinEnergy(int offset)
 	}
 }
 
-void deleteSeam(int offset)
+void deleteSeam(int offset = 0)
 {
 	pixmap2 = pixmap;
 	int newWidth = width - offset;
@@ -1212,9 +1215,58 @@ void deleteSeam(int offset)
 	}
 }
 
+void calculateDifference()
+{
+	energy.resize(height * width, 0.0f);
+
+#pragma omp parellel for
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			int p = (i * width + j) * 3;
+			Color c = compositeOperation(p, i, j);
+			pixmap3[p + 0] = (uint8_t)(c.r * 255);
+			pixmap3[p + 1] = (uint8_t)(c.g * 255);
+			pixmap3[p + 2] = (uint8_t)(c.b * 255);
+			energy[i * width + j] = c.r;
+		}
+	}
+}
+
+void composeSeam()
+{
+	int currIndex = minEnergyColIndex;
+	for (int i = height - 1; i >= 0; --i)
+	{
+		int loc = i * width + currIndex;
+		
+		int p = loc * 3;
+		pixmap3[p + 0] = 255;
+		pixmap3[p + 1] = 0;
+		pixmap3[p + 2] = 0;
+
+		for (int j = 0; j < width; ++j)
+		{
+			int p = (i * width + j) * 3;
+			if (j < currIndex)
+				continue;
+			else
+			{
+				pixmap[p + 0] = pixmap2[p + 0];
+				pixmap[p + 1] = pixmap2[p + 1];
+				pixmap[p + 2] = pixmap2[p + 2];
+			}
+		}
+		
+		int prev = minEnergy[loc].second;
+		currIndex = prev;
+	}
+}
+
 void render()
 {
-#ifdef COMPOSTION
+#ifdef COMPOSITIONS
 	k.boxFilter();
 #endif
 

@@ -3,7 +3,7 @@
 void setPixels()
 {
 	// make sure all images have same size
-	Image img = readPPM("ppm/carv2.ppm");
+	Image img = readPPM("ppm/carv10.ppm");
 	width = img.w;
 	height = img.h;
 	img.flip();
@@ -24,8 +24,8 @@ void setPixels()
 	outputImg.flip();
 	writePPM(outputImg, "ppm/dither_o.ppm");*/
 	
-
 	// seam carving
+#if 0
 	int deleteNumPixels = 200;
 	for (int w = 0; w < deleteNumPixels; w++)
 	{
@@ -41,6 +41,26 @@ void setPixels()
 		outputImg2.flip();
 		writePPM(outputImg2, "ppm/seam_"+ std::to_string(2*w+1) + ".ppm");
 	}
+#endif
+	// seam compositing
+#if 1
+	Image img2 = readPPM("ppm/carv9.ppm");
+	img2.flip();
+	pixmap2 = img2.data;
+	pixmap3 = pixmap; // resize instead of copy
+	
+	calculateDifference();
+	calculateMinEnergy();
+	composeSeam();
+	
+	Image outputImg1(width, height, pixmap3);
+	outputImg1.flip();
+	writePPM(outputImg1, "ppm/seamC1.ppm");
+
+	Image outputImg2(width, height, pixmap);
+	outputImg2.flip();
+	writePPM(outputImg2, "ppm/seamC2.ppm");
+#endif
 }
 
 static void windowResize(int w, int h)

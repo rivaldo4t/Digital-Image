@@ -108,8 +108,8 @@ c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1104): warning C4
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1109): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1111): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1144): warning C4305: '=': truncation from 'int' to 'float'
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1277): warning C4101: 'y': unreferenced local variable
-c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1277): warning C4101: 'x': unreferenced local variable
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1301): warning C4101: 'y': unreferenced local variable
+c:\users\tushar\source\repos\digimage\digimage\header\main.hpp(1301): warning C4101: 'x': unreferenced local variable
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\memory(1778): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<double,double>(double &&,double &&)' being compiled
           with
