@@ -1206,9 +1206,9 @@ void deleteSeam(int offset = 0)
 			pixmap[pixIndex + 2] = pixmap[nextPixIndex + 2];
 		}
 		pixIndex = (i * width + jj) * 3;
-		pixmap[pixIndex + 0] = 0;
-		pixmap[pixIndex + 1] = 255;
-		pixmap[pixIndex + 2] = 0;
+		pixmap[pixIndex + 0] = 50;
+		pixmap[pixIndex + 1] = 50;
+		pixmap[pixIndex + 2] = 50;
 
 		int prev = minEnergy[loc].second;
 		currIndex = prev;
