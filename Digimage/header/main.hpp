@@ -20,7 +20,7 @@
 // #define CONVOLUTION_FILTERS
 // #define RASTERIZED_SHAPES
 // #define PROCEDURAL_IMAGE_GEN
-// #define TRANSFORMATIONS
+#define TRANSFORMATIONS
 // #define COMPOSITIONS
 
 // #define DITHERING
@@ -719,6 +719,8 @@ void bilinearWarpTransform(double& X, double& Y, std::vector<std::vector<double>
 	Y = (int)((height - 1)*v + 0.5);
 }
 
+double twirlRot, twirlSize; // twirlRot = rotation of twirl, twirlSize = size of twirl
+double twirlX, twirlY; // location of twirl
 void warpTransform(double& X, double& Y)
 {
 #if 0
@@ -729,10 +731,8 @@ void warpTransform(double& X, double& Y)
 	Y = y - amp * sin(x / amp);
 #else
 	// twirl inverse transform
-	double a = 10, b = 50; // a = rotation of twirl, b = size of twirl
-	double twirlX = 400, twirlY = 200; // location of twirl
 	double x = X - twirlX, y = Y - twirlY;
-	double angle = abs(a*exp(-(x*x + y*y) / (b*b)));
+	double angle = abs(twirlRot*exp(-(x*x + y*y) / (twirlSize*twirlSize)));
 	double u = cos(angle)*x + sin(angle)*y;
 	double v = -sin(angle)*x + cos(angle)*y;
 	X = u + twirlX;
@@ -1398,8 +1398,8 @@ void render()
 					}
 #endif
 
-					/*if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)
-						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);*/
+					if (pix < pixmap.size() && int(Y) < height && int(X) < width && int(Y) >= 0 && int(X) >= 0)
+						c = Color(pixmap[pix + 0] / 255.0, pixmap[pix + 1] / 255.0, pixmap[pix + 2] / 255.0);
 					
 					r += c.r * weighted;
 					g += c.g * weighted;

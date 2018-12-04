@@ -2,13 +2,42 @@
 
 void setPixels()
 {
+#if 1
+	int numFrames = 299;
+	twirlRot = 10;
+	twirlSize = -200;
+	twirlX = 0;
+	twirlY = 0;
+	for (int i = 1; i <= numFrames; ++i)
+	{
+		pixmap.clear();
+		pixmap2.clear();
+
+		Image img = readPPM("ppm/warp/scene_" + std::to_string(i) + ".ppm");
+		width = img.w;
+		height = img.h;
+		img.flip();
+		pixmap = img.data;
+		pixmap2 = pixmap; // resize instead of copy
+
+		render();
+		twirlSize += 1;
+		twirlX = width * float(i) / 299;
+		twirlY = height * float(i) / 299;
+
+		Image outputImg(width, height, pixmap);
+		outputImg.flip();
+		writePPM(outputImg, "ppm/warpOut/scene_" + std::to_string(i) + ".ppm");
+	}
+#endif
+	
 	// make sure all images have same size
-	Image img = readPPM("ppm/carv12.ppm");
-	width = img.w;
-	height = img.h;
-	img.flip();
-	pixmap = img.data;
-	pixmap2 = pixmap; // resize instead of copy
+	//Image img = readPPM("ppm/mp.ppm");
+	//width = img.w;
+	//height = img.h;
+	//img.flip();
+	//pixmap = img.data;
+	//pixmap2 = pixmap; // resize instead of copy
 	
 	/*Image img2 = readPPM("ppm/dp_green.ppm");
 	img2.flip();
@@ -25,7 +54,7 @@ void setPixels()
 	writePPM(outputImg, "ppm/dither_o.ppm");*/
 	
 	// seam carving
-#if 1
+#if 0
 	int deleteNumPixels = 960;
 	for (int w = 0; w < deleteNumPixels; w++)
 	{

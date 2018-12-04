@@ -108,6 +108,8 @@ C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1104): warning C4
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1109): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1111): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1143): warning C4305: '=': truncation from 'int' to 'float'
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1401): warning C4018: '<': signed/unsigned mismatch
+C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1402): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1332): warning C4101: 'y': unreferenced local variable
 C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(1332): warning C4101: 'x': unreferenced local variable
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.11.25503\include\memory(1712): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
@@ -123,8 +125,8 @@ C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.1
           ]
   C:\Users\TUSHAR\source\repos\Digimage\Digimage\Header\main.hpp(648): note: see reference to function template instantiation 'std::shared_ptr<PerspectiveMatrix> std::make_shared<PerspectiveMatrix,double,double>(double &&,double &&)' being compiled
   Generating code
-  2 of 501 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  2 of 743 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    11 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Digimage.vcxproj -> C:\Users\TUSHAR\source\repos\Digimage\bin\Win32\Release\Digimage.exe
